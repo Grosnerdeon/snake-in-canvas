@@ -36,6 +36,12 @@ class Part {
     }
 
     draw (ctx) {
+        if (this.isSnake) {
+            ctx.fillStyle = 'green';
+        } else {
+            ctx.fillStyle = 'red';
+        }
+        
         ctx.fillRect(this.positionX, this.positionY, this.widht, this.height);
     }
 
