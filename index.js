@@ -104,9 +104,27 @@ class Snake {
         })
     }
 
-    moveSnake (ctx) {
-        this.parts.forEach(part => {
+    moveSnake (ctx, appels) {
+        let partSnake = new Part({ 
+            widht: this.parts[0].widht, 
+            height: this.parts[0].height, 
+            positionX: this.parts[0].positionX, 
+            positionY: this.parts[0].positionY, 
+            orientation: this.parts[0].orientation 
+        });
+
+        this.parts.forEach((part, index) => { 
             part.move(ctx);
+
+            if (index === this.parts.length - 1) {
+                const foundedApple = [...appels.values()]
+                    .find(appel => appel.positionX === part.positionX && 
+                        appel.positionY === part.positionY);
+
+                if (foundedApple) {
+                    this.parts.unshift(partSnake);
+                }        
+            }
         });
     }
 
@@ -187,7 +205,7 @@ snake.defineAreaSnake();
 
 setInterval(() => {
     snake.checkOrientation();
-    snake.moveSnake(ctx);
+    snake.moveSnake(ctx, appels);
     snake.drawSnake(ctx);
     snake.areaSnake = [];
     snake.defineAreaSnake();
@@ -201,7 +219,7 @@ setInterval(() => {
         appels.set(newApple.id, newApple);
         appels.get(newApple.id).draw(ctx);
     }
-}, 4000);
+}, 10000);
 
 document.addEventListener('keydown', (event) => {
     //move left
